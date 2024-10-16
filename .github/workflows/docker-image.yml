@@ -20,5 +20,8 @@ jobs:
       - name: Build the Docker image
         run: docker build -t portfolio:latest .
 
+      - name: Build the Docker image
+        run: docker images
+
       - name: Push to Dockerhub
         run: docker push chandrababugowda/portfolio:latest
