@@ -21,4 +21,4 @@ jobs:
         run: docker build -t portfolio .
 
       - name: Push to Dockerhub
-        run: docker push ${{secrets.DOCKER_USERNAME}}/portfolio:latest
+        run: docker push chandrababugowda/portfolio:latest
