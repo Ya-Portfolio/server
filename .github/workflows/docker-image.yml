@@ -21,4 +21,4 @@ jobs:
         run: docker build -t portfolio:latest .
 
       - name: Push to Dockerhub
-        run: docker push chandrababugowda/portfolio:latest
+        run: docker push docker.io/chandrababugowda/portfolio:latest
