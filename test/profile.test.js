@@ -26,7 +26,35 @@ suite("GET /api/profile", () => {
       });
   });
 
+  test("Respond with the 200 status code after updating the details", async () => {
+    await request(app)
+      .put("/api/profile")
+      .set("Cookie", "loginToken=")
+      .then((res) => {
+        expect(res.status).to.equal(200);
+        expect(res.body).to.be.an("object");
+      })
+      .catch((err) => {
+        throw err;
+      });
+  });
+
   after(async () => {
     await mongoose.disconnect();
   });
 });
+
+// ********** Stress test code **********
+
+// test("Homepage should handle 1000 request in a second", (done) => {
+//   var options = {
+//     url: "http://localhost:3000/api/profile",
+//     concurrency: 4,
+//     maxRequests: 15000,
+//   };
+//   loadTest(options, (err, result) => {
+//     expect(!err);
+//     expect(result.totalTimeSeconds < 1);
+//     done();
+//   });
+// });

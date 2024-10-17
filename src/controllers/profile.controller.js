@@ -24,4 +24,28 @@ async function readProfileDetails(req, res) {
     });
 }
 
-export { readProfileDetails };
+async function createProfileDetail(req, res) {}
+
+async function updateProfileDetail(req, res) {
+  // TODO - Get the email from the JWT token
+  // const { email } = req.user;
+
+  // TODO - Remove this email
+  const email = "chandrababugowda3042003@gmail.com";
+
+  const { about, education } = req.body;
+  const searchCondition = { email };
+  const updateData = { about, education };
+
+  Profile.findOneAndUpdate(searchCondition, updateData)
+    .then(() => {
+      res.status(200).json(new ApiResponse(200, "Updated the profile", {}));
+    })
+    .catch((err) => {
+      const errorMessage = "Unable to update the profile details";
+      displayError(errorMessage, __dirname, err);
+      res.status(400).json(new ApiResponse(400, errorMessage, {}));
+    });
+}
+
+export { readProfileDetails, createProfileDetail, updateProfileDetail };
