@@ -1,14 +1,10 @@
 import mongoose from "mongoose";
-
-const fileSchema = new mongoose.Schema({
-  originalName: String,
-  uuid: String,
-});
+import { IndividualDocument } from "./individualDocument.model.js";
 
 const achievementSchema = new mongoose.Schema({
   title: { type: String, require: true },
   description: String,
-  file: fileSchema,
+  file: { type: mongoose.Schema.Types.ObjectId, ref: "IndividualDocument" },
 });
 
 const Achievement = mongoose.model("achievements", achievementSchema);
