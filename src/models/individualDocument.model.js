@@ -10,4 +10,4 @@ const IndividualDocument = mongoose.model(
   individualDocumentSchema
 );
 
-export { individualDocumentSchema, IndividualDocument };
+export { IndividualDocument };
