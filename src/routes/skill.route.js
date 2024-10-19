@@ -2,8 +2,7 @@ import { Router } from "express";
 import multer from "multer";
 import multerS3 from "multer-s3";
 import { v4 as uuidv4 } from "uuid";
-import { config } from "dotenv";
-import { s3 } from "../utils/aws.js";
+import { bucketName, s3 } from "../utils/aws.js";
 import { autheticateToken } from "../middlewares/auth.middleware.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import {
@@ -13,13 +12,12 @@ import {
   deleteSkill,
 } from "../controllers/skill.controller.js";
 
-config();
 const router = Router();
 
 const upload = multer({
   storage: multerS3({
     s3: s3,
-    bucket: process.env.AWS_BUCKET_NAME,
+    bucket: bucketName,
     metadata: (req, file, cb) => {
       cb(null, { mimeType: file.mimetype });
     },

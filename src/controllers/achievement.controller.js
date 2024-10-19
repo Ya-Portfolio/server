@@ -46,7 +46,41 @@ function createAchievement(req, res) {
     });
 }
 
-function updateAchievement(req, res) {}
+function updateAchievement(req, res) {
+  const imageDetails = req.file;
+  const { _id: achievementObjectId } = req.body;
+
+  const newImageData = {
+    originalName: imageDetails.originalname,
+    uuid: imageDetails.key,
+    location: imageDetails.location,
+  };
+
+  IndividualDocument.create(newImageData)
+    .then(async (imageData) => {
+      const achievementUpdateData = {
+        $push: { gallery: imageData._id },
+      };
+      await Achievement.findByIdAndUpdate(
+        achievementObjectId,
+        achievementUpdateData
+      );
+      res
+        .status(201)
+        .json(new ApiResponse(201, "Image added to achievement", {}));
+    })
+    .catch(async (err) => {
+      const input = {
+        Bucket: bucketName,
+        Key: imageDetails.key,
+      };
+      const command = new DeleteObjectCommand(input);
+      await s3.send(command);
+      const errorMessage = "Unable to update the achievement";
+      displayError(errorMessage, __dirname, err);
+      res.status(400).json(new ApiResponse(400, errorMessage, {}));
+    });
+}
 
 function deleteAchievement(req, res) {}
 
