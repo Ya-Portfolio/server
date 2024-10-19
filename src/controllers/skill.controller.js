@@ -15,7 +15,7 @@ function readSkill(req, res) {
   const projectionObject = { __v: 0 };
 
   Skill.find(searchCondition, projectionObject)
-    .populate("gallery", { _id: 0, __v: 0 })
+    .populate("gallery", { __v: 0 })
     .then((result) => {
       res
         .status(200)
@@ -80,7 +80,16 @@ function deleteSkill(req, res) {
 
   Skill.findByIdAndDelete(ObjectId)
     .then((response) => {
-      // TODO - Delete all the files from the bucket. The files name is in gallery array (response.gallery)
+      response.gallery.forEach(async (image) => {
+        const imageDetails = await IndividualDocument.findByIdAndDelete(image);
+        const input = {
+          Bucket: process.env.AWS_BUCKET_NAME,
+          Key: imageDetails.uuid,
+        };
+        const command = new DeleteObjectCommand(input);
+        await s3.send(command);
+      });
+
       res.status(200).json(new ApiResponse(200, "Deleted the skill", {}));
     })
     .catch((err) => {
