@@ -57,7 +57,7 @@ async function login(req, res) {
 
         const loginToken = jwt.sign(
           loginTokenPayload,
-          process.env.TOKEN_ACCESS_KEY,
+          process.env.LOGIN_TOKEN_ACCESS_KEY,
           signOptions
         );
 

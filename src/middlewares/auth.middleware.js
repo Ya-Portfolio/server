@@ -13,13 +13,19 @@ async function autheticateToken(req, res, next) {
       res.status(400).json(new ApiResponse(400, "Unauthorized", {}));
     }
 
-    jwt.verify(token, process.env.TOKEN_ACCESS_KEY, (err, userDetails) => {
-      if (err) {
-        res.status(403).json(new ApiResponse(403, "Access forbidden", {}));
+    jwt.verify(
+      token,
+      process.env.LOGIN_TOKEN_ACCESS_KEY,
+      (err, userDetails) => {
+        if (err) {
+          return res
+            .status(403)
+            .json(new ApiResponse(403, "Access forbidden", {}));
+        }
+        req.user = userDetails;
+        next();
       }
-      req.user = userDetails;
-      next();
-    });
+    );
   } catch (error) {
     console.log(
       new ApiError(

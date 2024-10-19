@@ -3,6 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import profileRouter from "./routes/profile.route.js";
 import loginRouter from "./routes/authenticate.route.js";
+import skillRouter from "./routes/skill.route.js";
 
 const app = express();
 
@@ -13,5 +14,6 @@ app.use(cookieParser());
 
 app.use("/api/authenticate", loginRouter);
 app.use("/api/profile", profileRouter);
+app.use("/api/skill", skillRouter);
 
 export default app;
