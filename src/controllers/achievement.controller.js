@@ -82,7 +82,29 @@ function updateAchievement(req, res) {
     });
 }
 
-function deleteAchievement(req, res) {}
+function deleteAchievement(req, res) {
+  const { _id: achievementObjectId } = req.body;
+
+  Achievement.findByIdAndDelete(achievementObjectId)
+    .then((response) => {
+      response.gallery.forEach(async (image) => {
+        const imageDetails = await IndividualDocument.findByIdAndDelete(image);
+        const input = {
+          Bucket: bucketName,
+          Key: imageDetails.uuid,
+        };
+        const command = new DeleteObjectCommand(input);
+        await s3.send(command);
+      });
+
+      res.status(200).json(new ApiResponse(200, "Deleted the achievement", {}));
+    })
+    .catch((err) => {
+      const errorMessage = "Unable to delete the achievement";
+      displayError(errorMessage, __dirname, err);
+      res.status(400).json(new ApiResponse(400, errorMessage, {}));
+    });
+}
 
 export {
   readAchievement,
