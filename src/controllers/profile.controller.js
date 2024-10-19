@@ -24,15 +24,8 @@ async function readProfileDetails(req, res) {
     });
 }
 
-async function createProfileDetail(req, res) {}
-
 async function updateProfileDetail(req, res) {
-  // TODO - Get the email from the JWT token
-  // const { email } = req.user;
-
-  // TODO - Remove this email
-  const email = "chandrababugowda3042003@gmail.com";
-
+  const { email } = req.user;
   const { about, education } = req.body;
   const searchCondition = { email };
   const updateData = { about, education };
@@ -48,4 +41,4 @@ async function updateProfileDetail(req, res) {
     });
 }
 
-export { readProfileDetails, createProfileDetail, updateProfileDetail };
+export { readProfileDetails, updateProfileDetail };

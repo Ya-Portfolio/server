@@ -10,8 +10,8 @@ const router = Router();
 
 router.route("/").get(asyncHandler(readProfileDetails));
 
-// router.use(asyncHandler(autheticateToken));
+router.use(asyncHandler(autheticateToken));
 
-router.route("/").post().put(asyncHandler(updateProfileDetail)).delete();
+router.route("/").put(asyncHandler(updateProfileDetail));
 
 export default router;

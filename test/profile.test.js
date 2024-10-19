@@ -8,7 +8,7 @@ import { loadTest } from "loadtest";
 
 config();
 
-suite("GET /api/profile", () => {
+suite("Endpoint- /api/profile", () => {
   before(async () => {
     await mongoose.connect(`${process.env.MONGODB_URI}`);
   });
