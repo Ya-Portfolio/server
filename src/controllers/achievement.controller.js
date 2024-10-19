@@ -15,7 +15,7 @@ function readAchievement(req, res) {
   const projectionObject = { __v: 0 };
 
   Achievement.find(searchCondition, projectionObject)
-    .populate("files", projectionObject)
+    .populate("gallery", projectionObject)
     .then((result) => {
       res.status(200).json(
         new ApiResponse(200, "Fetched the achievements", {
@@ -30,7 +30,21 @@ function readAchievement(req, res) {
     });
 }
 
-function createAchievement(req, res) {}
+function createAchievement(req, res) {
+  const { title, description } = req.body;
+
+  const data = { title, description, gallery: [] };
+
+  Achievement.create(data)
+    .then(() => {
+      res.status(201).json(new ApiResponse(201, "Achievement created", {}));
+    })
+    .catch((err) => {
+      const errorMessage = "Unable to create an achievement";
+      displayError(errorMessage, __dirname, err);
+      res.status(400).json(new ApiResponse(400, errorMessage, {}));
+    });
+}
 
 function updateAchievement(req, res) {}
 
