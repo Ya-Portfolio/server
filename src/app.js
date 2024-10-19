@@ -5,6 +5,7 @@ import profileRouter from "./routes/profile.route.js";
 import loginRouter from "./routes/authenticate.route.js";
 import skillRouter from "./routes/skill.route.js";
 import achievementRouter from "./routes/achievement.route.js";
+import contactRouter from "./routes/contact.route.js";
 
 const app = express();
 
@@ -17,5 +18,6 @@ app.use("/api/authenticate", loginRouter);
 app.use("/api/profile", profileRouter);
 app.use("/api/skill", skillRouter);
 app.use("/api/achievement", achievementRouter);
+app.use("/api/contact", contactRouter);
 
 export default app;
