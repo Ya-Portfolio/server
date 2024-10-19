@@ -1,12 +1,12 @@
 import { Router } from "express";
-import { asyncHandler } from "../utils/asyncHandler";
-import { autheticateToken } from "../middlewares/auth.middleware";
+import { asyncHandler } from "../utils/asyncHandler.js";
+import { autheticateToken } from "../middlewares/auth.middleware.js";
 import {
   createAchievement,
   deleteAchievement,
   readAchievement,
   updateAchievement,
-} from "../controllers/achievement.controller";
+} from "../controllers/achievement.controller.js";
 
 const router = Router();
 

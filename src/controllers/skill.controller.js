@@ -15,14 +15,14 @@ function readSkill(req, res) {
   const projectionObject = { __v: 0 };
 
   Skill.find(searchCondition, projectionObject)
-    .populate("gallery", { __v: 0 })
+    .populate("gallery", projectionObject)
     .then((result) => {
       res
         .status(200)
         .json(new ApiResponse(200, "Fetched the skills", { skills: result }));
     })
     .catch((err) => {
-      const errorMessage = "Unable to fetch the skilld";
+      const errorMessage = "Unable to fetch the skills";
       displayError(errorMessage, __dirname, err);
       res.status(400).json(new ApiResponse(400, errorMessage, {}));
     });
