@@ -5,7 +5,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { displayError } from "../utils/displayFunctions.js";
 import { IndividualDocument } from "../models/individualDocument.model.js";
 import { DeleteObjectCommand } from "@aws-sdk/client-s3";
-import { s3 } from "../utils/aws.js";
+import { bucketName, s3 } from "../utils/aws.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -64,7 +64,7 @@ function updateSkill(req, res) {
     })
     .catch(async (err) => {
       const input = {
-        Bucket: process.env.AWS_BUCKET_NAME,
+        Bucket: bucketName,
         Key: imageDetails.key,
       };
       const command = new DeleteObjectCommand(input);
@@ -83,7 +83,7 @@ function deleteSkill(req, res) {
       response.gallery.forEach(async (image) => {
         const imageDetails = await IndividualDocument.findByIdAndDelete(image);
         const input = {
-          Bucket: process.env.AWS_BUCKET_NAME,
+          Bucket: bucketName,
           Key: imageDetails.uuid,
         };
         const command = new DeleteObjectCommand(input);
