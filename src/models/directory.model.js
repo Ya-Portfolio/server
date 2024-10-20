@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { IndividualDocument } from "./individualDocument.model";
+import { IndividualDocument } from "./individualDocument.model.js";
 
 const directorySchema = new mongoose.Schema({
   name: { type: String, require: true },

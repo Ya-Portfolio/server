@@ -41,7 +41,20 @@ function readContact(req, res) {
     });
 }
 
-function updateContact(req, res) {}
+function updateContact(req, res) {
+  const { _id, gmeetLink } = req.body;
+  const updateData = { gmeetLink };
+
+  Contact.findByIdAndUpdate(_id, updateData)
+    .then(() => {
+      res.status(200).json(new ApiResponse(200, "Add the meeting link", {}));
+    })
+    .catch((err) => {
+      const errorMessage = "Unable to add the meeting link";
+      displayError(errorMessage, __dirname, err);
+      res.status(400).json(new ApiResponse(400, errorMessage, {}));
+    });
+}
 
 function deleteContact(req, res) {
   const { _id } = req.body;
