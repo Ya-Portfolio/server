@@ -4,9 +4,10 @@ const contactSchema = new mongoose.Schema({
   email: { type: String, require: true },
   name: { type: String, require: true },
   message: String,
-  wantGmeet: Boolean,
-  meetDate: Date,
-  meetTime: String,
+  wantGmeet: { type: Boolean, default: false },
+  meetDate: { type: Date, default: null },
+  meetTime: { type: String, default: null },
+  approved: { type: Boolean, default: false },
   gmeetLink: String,
 });
 
