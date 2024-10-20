@@ -28,13 +28,11 @@ function readContact(req, res) {
 
   Contact.find(searchCondition, projectionObject)
     .then((result) => {
-      res
-        .status(200)
-        .json(
-          new ApiResponse(200, "Retrieved the contact requests", {
-            requests: result,
-          })
-        );
+      res.status(200).json(
+        new ApiResponse(200, "Retrieved the contact requests", {
+          requests: result,
+        })
+      );
     })
     .catch((err) => {
       const errorMessage = "Unable to retrieve the contact requests";
@@ -45,6 +43,20 @@ function readContact(req, res) {
 
 function updateContact(req, res) {}
 
-function deleteContact(req, res) {}
+function deleteContact(req, res) {
+  const { _id } = req.body;
+
+  Contact.findByIdAndDelete(_id)
+    .then(() => {
+      res
+        .status(200)
+        .json(new ApiResponse(200, "Deleted the contact request", {}));
+    })
+    .catch((err) => {
+      const errorMessage = "Unable to delete the contact request";
+      displayError(errorMessage, __dirname, err);
+      res.status(400).json(new ApiResponse(400, errorMessage, {}));
+    });
+}
 
 export { createContact, readContact, updateContact, deleteContact };
