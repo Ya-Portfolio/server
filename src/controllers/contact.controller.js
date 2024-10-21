@@ -3,6 +3,7 @@ import { fileURLToPath } from "url";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { displayError } from "../utils/displayFunctions.js";
 import { Contact } from "../models/contact.model.js";
+import { transporter } from "../utils/nodemailer.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -70,6 +71,23 @@ function deleteContact(req, res) {
       displayError(errorMessage, __dirname, err);
       res.status(400).json(new ApiResponse(400, errorMessage, {}));
     });
+}
+
+async function replyToMail(req, res) {
+  const { email, mailSubject, mailBody } = req.body;
+  const mailOptions = {
+    to: email,
+    subject: mailSubject,
+    text: mailBody,
+  };
+  try {
+    await transporter.sendMail(mailOptions);
+    res.status(200).json(new ApiResponse(200, "Sent the mail", {}));
+  } catch (err) {
+    const errorMessage = "Unable to send the mail";
+    displayError(errorMessage, __dirname, err);
+    res.status(400).json(new ApiResponse(400, errorMessage, {}));
+  }
 }
 
 export { createContact, readContact, updateContact, deleteContact };
