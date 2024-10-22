@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { IndividualDocument } from "./individualDocument.model.js";
 
 const achievementSchema = new mongoose.Schema({
-  title: { type: String, require: true },
+  title: String,
   description: String,
   gallery: [{ type: mongoose.Schema.Types.ObjectId, ref: IndividualDocument }],
 });

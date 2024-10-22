@@ -29,13 +29,13 @@ function readSkill(req, res) {
 }
 
 function createSkill(req, res) {
-  const { name } = req.body;
-
-  const data = { name, gallery: [] };
+  const data = { name: "", gallery: [] };
 
   Skill.create(data)
-    .then(() => {
-      res.status(201).json(new ApiResponse(201, "Skill created", {}));
+    .then((createdObj) => {
+      res
+        .status(201)
+        .json(new ApiResponse(201, "Skill created", { _id: createdObj._id }));
     })
     .catch((err) => {
       const errorMessage = "Unable to create a skill";
@@ -46,7 +46,7 @@ function createSkill(req, res) {
 
 function updateSkill(req, res) {
   const imageDetails = req.file;
-  const { _id: skillObjectId } = req.body;
+  const { _id: skillObjectId, name } = req.body;
 
   const newImageData = {
     originalName: imageDetails.originalname,
@@ -56,9 +56,7 @@ function updateSkill(req, res) {
 
   IndividualDocument.create(newImageData)
     .then(async (imageData) => {
-      const skillUpdateData = {
-        $push: { gallery: imageData._id },
-      };
+      const skillUpdateData = { name, $push: { gallery: imageData._id } };
       await Skill.findByIdAndUpdate(skillObjectId, skillUpdateData);
       res.status(201).json(new ApiResponse(201, "Image added to skill", {}));
     })

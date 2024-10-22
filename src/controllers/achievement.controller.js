@@ -31,13 +31,15 @@ function readAchievement(req, res) {
 }
 
 function createAchievement(req, res) {
-  const { title, description } = req.body;
-
-  const data = { title, description, gallery: [] };
+  const data = { title: "", gallery: [] };
 
   Achievement.create(data)
-    .then(() => {
-      res.status(201).json(new ApiResponse(201, "Achievement created", {}));
+    .then((createdObj) => {
+      res
+        .status(201)
+        .json(
+          new ApiResponse(201, "Achievement created", { _id: createdObj._id })
+        );
     })
     .catch((err) => {
       const errorMessage = "Unable to create an achievement";
@@ -48,7 +50,7 @@ function createAchievement(req, res) {
 
 function updateAchievement(req, res) {
   const imageDetails = req.file;
-  const { _id: achievementObjectId } = req.body;
+  const { _id: achievementObjectId, title } = req.body;
 
   const newImageData = {
     originalName: imageDetails.originalname,
@@ -59,6 +61,7 @@ function updateAchievement(req, res) {
   IndividualDocument.create(newImageData)
     .then(async (imageData) => {
       const achievementUpdateData = {
+        title,
         $push: { gallery: imageData._id },
       };
       await Achievement.findByIdAndUpdate(
