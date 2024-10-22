@@ -8,6 +8,7 @@ import achievementRouter from "./routes/achievement.route.js";
 import contactRouter from "./routes/contact.route.js";
 import documentRouter from "./routes/document.route.js";
 import directoryRouter from "./routes/directory.route.js";
+import fileRouter from "./routes/file.route.js";
 
 const app = express();
 
@@ -23,5 +24,6 @@ app.use("/api/achievement", achievementRouter);
 app.use("/api/contact", contactRouter);
 app.use("/api/directory", directoryRouter);
 app.use("/api/document", documentRouter);
+app.use("/api/file", fileRouter);
 
 export default app;
