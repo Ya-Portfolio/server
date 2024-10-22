@@ -9,7 +9,7 @@ const __dirname = path.dirname(__filename);
 
 async function readProfileDetails(req, res) {
   const searchCondition = {};
-  const projectionObject = { email: 0, _id: 0, __v: 0, password: 0 };
+  const projectionObject = { email: 0, __v: 0, password: 0 };
 
   Profile.findOne(searchCondition, projectionObject)
     .then((profileDetails) => {
