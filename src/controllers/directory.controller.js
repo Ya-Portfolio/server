@@ -81,14 +81,19 @@ async function editDirectory(req, res) {
 }
 
 function deleteDirectory(req, res) {
+  console.log(req.query);
   const { _id } = req.query;
-  if (!checkValidToken(req, res)) {
+
+  if (!checkValidToken(req.cookies.loginToken)) {
     return res.status(400).json(new ApiResponse(400, "Unauthorized", {}));
   }
 
   Directory.findByIdAndDelete(_id)
     .then((deletedDirectory) => {
-      deletedDirectory.documents.forEach(async (documentId) => {
+      const { documents } = deletedDirectory;
+      console.log(documents);
+      documents.forEach(async (documentId) => {
+        console.log(documentId);
         const deletedIndividualDocument =
           await IndividualDocument.findByIdAndDelete(documentId);
         const input = {
@@ -97,6 +102,7 @@ function deleteDirectory(req, res) {
         };
         const command = new DeleteObjectCommand(input);
         await s3.send(command);
+        res.status(200).json(new ApiResponse(200, "Directory deleted", {}));
       });
     })
     .catch((err) => {

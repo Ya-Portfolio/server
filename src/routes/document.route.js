@@ -4,12 +4,9 @@ import multerS3 from "multer-s3";
 import { v4 as uuidv4 } from "uuid";
 import { bucketName, s3 } from "../utils/aws.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { autheticateToken } from "../middlewares/auth.middleware.js";
 import {
-  uploadPrivateDocument,
-  uploadPublicDocument,
-  listPublicDocument,
-  listAllDocument,
+  uploadDocument,
+  listDocuments,
   deleteDocument,
 } from "../controllers/document.controller.js";
 
@@ -29,16 +26,9 @@ const upload = multer({
 });
 
 router
-  .route("/public")
-  .get(asyncHandler(listPublicDocument))
-  .post(upload.single("document"), asyncHandler(uploadPublicDocument));
-
-router.use(asyncHandler(autheticateToken));
-
-router
   .route("/")
-  .get(asyncHandler(listAllDocument))
-  .post(upload.single("document"), asyncHandler(uploadPrivateDocument))
+  .get(asyncHandler(listDocuments))
+  .post(upload.single("document"), asyncHandler(uploadDocument))
   .delete(asyncHandler(deleteDocument));
 
 export default router;

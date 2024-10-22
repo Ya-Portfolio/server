@@ -7,6 +7,7 @@ import skillRouter from "./routes/skill.route.js";
 import achievementRouter from "./routes/achievement.route.js";
 import contactRouter from "./routes/contact.route.js";
 import documentRouter from "./routes/document.route.js";
+import directoryRouter from "./routes/directory.route.js";
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use("/api/profile", profileRouter);
 app.use("/api/skill", skillRouter);
 app.use("/api/achievement", achievementRouter);
 app.use("/api/contact", contactRouter);
+app.use("/api/directory", directoryRouter);
 app.use("/api/document", documentRouter);
 
 export default app;

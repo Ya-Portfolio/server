@@ -38,11 +38,9 @@ async function autheticateToken(req, res, next) {
   }
 }
 
-async function checkValidToken(cookies) {
+function checkValidToken(token) {
   try {
-    const token = cookies.loginToken;
-    if (token === null) {
-      res.status(400).json(new ApiResponse(400, "Unauthorized", {}));
+    if (token === null || token === undefined) {
       return false;
     }
     jwt.verify(
@@ -50,14 +48,11 @@ async function checkValidToken(cookies) {
       process.env.LOGIN_TOKEN_ACCESS_KEY,
       (err, userDetails) => {
         if (err) {
-          return res
-            .status(403)
-            .json(new ApiResponse(403, "Access forbidden", {}));
+          return false;
         }
-        req.user = userDetails;
-        return true;
       }
     );
+    return true;
   } catch (error) {
     console.log(
       new ApiError(
@@ -67,7 +62,40 @@ async function checkValidToken(cookies) {
         error
       )
     );
+    return false;
   }
 }
+
+// async function checkValidToken(req, res) {
+//   try {
+//     const token = req.cookies.loginToken;
+//     if (token === null) {
+//       res.status(400).json(new ApiResponse(400, "Unauthorized", {}));
+//       return false;
+//     }
+//     jwt.verify(
+//       token,
+//       process.env.LOGIN_TOKEN_ACCESS_KEY,
+//       (err, userDetails) => {
+//         if (err) {
+//           res.status(403).json(new ApiResponse(403, "Access forbidden", {}));
+//           return false;
+//         }
+//         console.log("after return");
+//         req.user = userDetails;
+//         return true;
+//       }
+//     );
+//   } catch (error) {
+//     console.log(
+//       new ApiError(
+//         500,
+//         "Unable to authenticate token",
+//         "authenticateToken",
+//         error
+//       )
+//     );
+//   }
+// }
 
 export { autheticateToken, checkValidToken };
